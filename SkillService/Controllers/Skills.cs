@@ -65,13 +65,10 @@ namespace SkillService.Controllers
             {
                 return NotFound();
             }
-            Console.WriteLine($"--> Hit here 1: {certificateId}");
 
             var skill = _mapper.Map<Skill>(skillDto);
-            Console.WriteLine($"--> Hit here 2: {certificateId}");
 
             _repository.CreateSkill(certificateId, skill);
-            Console.WriteLine($"--> Hit here 3: {certificateId}");
 
             _repository.SaveChanges();
 
