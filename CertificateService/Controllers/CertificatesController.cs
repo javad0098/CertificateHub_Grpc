@@ -5,6 +5,7 @@ using CertificateService.Data;
 using CertificateService.Models;
 using CertificateService.Dtos;
 using CertificateService.SyncDataServices.Http;
+using CertificateService.AsyncDataServices;
 
 namespace CertificatesService.Controllers
 {
@@ -15,18 +16,21 @@ namespace CertificatesService.Controllers
         private readonly ISkillDataClient _skillDataClient;
         private readonly IMapper _maper;
         private readonly ICertificateRepo _repository;
-        public CertificatesController(ICertificateRepo repository, IMapper maper, ISkillDataClient skillDataClient)
+        private readonly IMessageBusClient _messageBusClient;
+
+        public CertificatesController(ICertificateRepo repository, IMapper maper, ISkillDataClient skillDataClient, IMessageBusClient messageBusClient)
         {
             _skillDataClient = skillDataClient;
             _maper = maper;
             _repository = repository;
+            _messageBusClient = messageBusClient;
         }
-        // GET api/platforms
+        // GET api/certificates
         [HttpGet]
         public ActionResult<IEnumerable<Certificate>> GetCertificates()
         {
 
-            Console.WriteLine(">> Getting All Platforms");
+            Console.WriteLine(">> Getting All Certificates");
 
             // Retrieve platforms from the repository
             var certificates = _repository.GetAllCertificates();
@@ -57,6 +61,7 @@ namespace CertificatesService.Controllers
             _repository.CreateCertificate(certificate);
             _repository.SaveChenges();
             var certificateReadDto = _maper.Map<CertificateReadDto>(certificate);
+            // Send ASync message
             try
             {
                 await _skillDataClient.SendCertificateToSkill(certificateReadDto);
@@ -65,6 +70,20 @@ namespace CertificatesService.Controllers
             {
                 Console.WriteLine($"==> could not send synchronously: {ex.Message}");
             }
+
+            // Send ASync message 
+            try
+            {
+                var certificatePublishedDto = _maper.Map<CertificatePublishedDto>(certificateReadDto);
+                certificatePublishedDto.Event = "Certificate_Published";
+                _messageBusClient.PublishNewCertificate(certificatePublishedDto);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"==> could not send Asynchronously: {ex.Message}");
+            }
+
             return CreatedAtRoute(nameof(GetCertificateById), new { id = certificateReadDto.Id }, certificateReadDto);
         }
     }

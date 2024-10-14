@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/Users/javad/Desktop/file/dev/repo/personal/Certificate/CertificateHub_SyncHandler/SkillService/SkillService.csproj": {}
+    "/Users/javad/Desktop/file/dev/repo/personal/Certificate/CertificateHub_AsyncHandler/SkillService/SkillService.csproj": {}
   },
   "projects": {
-    "/Users/javad/Desktop/file/dev/repo/personal/Certificate/CertificateHub_SyncHandler/SkillService/SkillService.csproj": {
+    "/Users/javad/Desktop/file/dev/repo/personal/Certificate/CertificateHub_AsyncHandler/SkillService/SkillService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/javad/Desktop/file/dev/repo/personal/Certificate/CertificateHub_SyncHandler/SkillService/SkillService.csproj",
+        "projectUniqueName": "/Users/javad/Desktop/file/dev/repo/personal/Certificate/CertificateHub_AsyncHandler/SkillService/SkillService.csproj",
         "projectName": "SkillService",
-        "projectPath": "/Users/javad/Desktop/file/dev/repo/personal/Certificate/CertificateHub_SyncHandler/SkillService/SkillService.csproj",
+        "projectPath": "/Users/javad/Desktop/file/dev/repo/personal/Certificate/CertificateHub_AsyncHandler/SkillService/SkillService.csproj",
         "packagesPath": "/Users/javad/.nuget/packages/",
-        "outputPath": "/Users/javad/Desktop/file/dev/repo/personal/Certificate/CertificateHub_SyncHandler/SkillService/obj/",
+        "outputPath": "/Users/javad/Desktop/file/dev/repo/personal/Certificate/CertificateHub_AsyncHandler/SkillService/obj/",
         "projectStyle": "PackageReference",
-        "configFilePaths": [
-          "/Users/javad/.nuget/NuGet/NuGet.Config"
-        ],
-        "originalTargetFrameworks": [
-          "net8.0"
-        ],
+        "configFilePaths": ["/Users/javad/.nuget/NuGet/NuGet.Config"],
+        "originalTargetFrameworks": ["net8.0"],
         "sources": {
           "/usr/local/share/dotnet/library-packs": {},
           "https://api.nuget.org/v3/index.json": {},
@@ -31,9 +27,7 @@
           }
         },
         "warningProperties": {
-          "warnAsError": [
-            "NU1605"
-          ]
+          "warnAsError": ["NU1605"]
         },
         "restoreAuditProperties": {
           "enableAudit": "true",
@@ -74,6 +68,10 @@
             "Microsoft.Extensions.Http": {
               "target": "Package",
               "version": "[8.0.0, )"
+            },
+            "RabbitMQ.Client": {
+              "target": "Package",
+              "version": "[6.8.1, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",

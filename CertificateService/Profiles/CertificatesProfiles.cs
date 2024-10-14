@@ -11,6 +11,8 @@ namespace CertificateService.Profiles
             // // CreateMap statement to map Platform to PlatformReadDto
             CreateMap<Certificate,CertificateReadDto >();
             CreateMap<CertificateCreateDtos, Certificate>();
+            CreateMap<CertificateReadDto, CertificatePublishedDto>();
+
         }
     }
 }

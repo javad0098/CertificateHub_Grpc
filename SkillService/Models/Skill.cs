@@ -27,6 +27,8 @@ namespace SkillService.Models
         public List<string> Tags { get; set; } = new List<string>();
 
         public bool IsPrimarySkill { get; set; }
+        public Certificate Certificate { get; set; }
+
     }
     public enum Proficiency
     {

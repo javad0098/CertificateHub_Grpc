@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace platformService.Controllers
+namespace SkillService.Controllers
 {
     [ApiController]
     [Route("api/s/[controller]")]

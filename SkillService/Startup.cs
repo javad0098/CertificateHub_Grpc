@@ -1,9 +1,12 @@
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using SkillService.Data;
+using SkillService.EventProcessing;
+using SkillsService.AsyncDataServices;
 
 namespace SkillService
 {
@@ -13,8 +16,16 @@ namespace SkillService
         {
             services.AddDbContext<AppDbContext>(opt => 
             opt.UseInMemoryDatabase("InMemory"));
-            
-            services.AddControllers();
+            services.AddScoped<ISkillRepo, SkillRepo>();
+
+   services.AddControllers()
+            .AddJsonOptions(options =>
+            {
+                // This ensures that enums are serialized/deserialized as strings
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });            
+            services.AddSingleton<IEventProcessor, EventProcessor>();
+            services.AddHostedService<MessageBusSubscriber>();
 
             services.AddSwaggerGen(c =>
             {
@@ -38,7 +49,7 @@ namespace SkillService
                 app.UseSwagger();
                 app.UseSwaggerUI(c =>
                 {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "PlatformService API v1");
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "SkillService API v1");
                     c.RoutePrefix = string.Empty; // Set Swagger UI at the root of the application
                 });
             }

@@ -10,5 +10,21 @@ namespace SkillService.Data
         }
 
         public DbSet<Skill> Skills { get; set; }
+        public DbSet<Certificate> Certificates { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder
+                .Entity<Certificate>()
+                .HasMany(p => p.Skills)
+                .WithOne(p => p.Certificate!)
+                .HasForeignKey(p => p.CertificateId);
+
+            modelBuilder
+                .Entity<Skill>()
+                .HasOne(p => p.Certificate)
+                .WithMany(p => p.Skills)
+                .HasForeignKey(p => p.CertificateId);
+        }
     }
 }
