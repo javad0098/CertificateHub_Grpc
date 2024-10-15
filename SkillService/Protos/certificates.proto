@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option csharp_namespace = "CertificateService";
+
+service GrpcCertificate {
+    rpc GetAllCertificates (GetAllRequest) returns (CertificateResponse);
+}
+
+message GetAllRequest {}
+
+message GrpcCertificateModel{
+    int32 certificateId = 1;
+    string name = 2;
+    string code = 3;
+}
+
+message CertificateResponse {
+    repeated GrpcCertificateModel certificate = 1;
+}

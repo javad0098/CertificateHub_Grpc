@@ -8,11 +8,13 @@ namespace CertificateService.Profiles
     {
         public CertificatesProfiles() // Removed the unnecessary parameter declaration
         {
-            // // CreateMap statement to map Platform to PlatformReadDto
-            CreateMap<Certificate,CertificateReadDto >();
+            CreateMap<Certificate, CertificateReadDto>();
             CreateMap<CertificateCreateDtos, Certificate>();
             CreateMap<CertificateReadDto, CertificatePublishedDto>();
-
+            CreateMap<Certificate, GrpcCertificateModel>()
+            .ForMember(dest => dest.CertificateId, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));
         }
     }
 }
+

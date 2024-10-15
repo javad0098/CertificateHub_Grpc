@@ -16,7 +16,7 @@ spec:
       - name: skillservice
         image: javad0098/skillservice:latest
 
-# ClusterIP Service for internal communication of CommandService
+# ClusterIP Service for internal communication 
 ---
 apiVersion: v1
 kind: Service

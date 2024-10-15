@@ -6,6 +6,7 @@ using Microsoft.OpenApi.Models;
 using CertificateService.Data;
 using CertificateService.SyncDataServices.Http;
 using CertificateService.AsyncDataServices;
+using CertificateService.SyncDataServices.Grpc;
 
 namespace CertificateService
 {
@@ -22,7 +23,7 @@ namespace CertificateService
             _env = env;
             _isEfMigration = AppDomain.CurrentDomain.FriendlyName.Equals("ef", StringComparison.OrdinalIgnoreCase);
         }
-       
+
         public void ConfigureServices(IServiceCollection services)
         {
 
@@ -58,6 +59,7 @@ namespace CertificateService
             services.AddSingleton<IMessageBusClient, MessageBusClient>();
 
             services.AddControllers(); // Register MVC controllers
+            services.AddGrpc();
 
             // Add Swagger services
             services.AddSwaggerGen(c =>
@@ -83,9 +85,8 @@ namespace CertificateService
                 app.UseSwagger();
                 app.UseSwaggerUI(c =>
                 {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "PlatformService API v1");
-                    c.RoutePrefix = string.Empty; // Set Swagger UI at the root of the application
-                });
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Certificate Service API v1");
+                    c.RoutePrefix = string.Empty; 
             }
 
             app.UseHttpsRedirection(); // Redirect HTTP requests to HTTPS
@@ -93,12 +94,18 @@ namespace CertificateService
             app.UseRouting();
 
             app.UseAuthorization();
-                
+
             PrepDB.PrepPopulation(app, env.IsProduction());
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers(); // Map controller routes
+                endpoints.MapGrpcService<GrpcCertificateService>();
+
+                endpoints.MapGet("/protos/certificates.proto", async context =>
+                {
+                    await context.Response.WriteAsync(File.ReadAllText("Protos/certificates.proto"));
+                });
             });
 
         }

@@ -20,8 +20,6 @@ namespace CertificateService.Data
                 // Check if context is not null
                 if (context != null)
                 {  
-                     Console.WriteLine("===>>> call migration 0.");
-
                     SeedData(context, isProd);
                 
                 }

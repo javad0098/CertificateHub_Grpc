@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using SkillService.Data;
 using SkillService.EventProcessing;
+using SkillService.SyncDataServices.Grpc;
 using SkillsService.AsyncDataServices;
 
 namespace SkillService
@@ -14,16 +15,17 @@ namespace SkillService
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<AppDbContext>(opt => 
+            services.AddDbContext<AppDbContext>(opt =>
             opt.UseInMemoryDatabase("InMemory"));
             services.AddScoped<ISkillRepo, SkillRepo>();
+            services.AddScoped<ICertificateDataClient, CertificateDataClient>();
 
-   services.AddControllers()
-            .AddJsonOptions(options =>
-            {
-                // This ensures that enums are serialized/deserialized as strings
-                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-            });            
+            services.AddControllers()
+                     .AddJsonOptions(options =>
+                     {
+                         // This ensures that enums are serialized/deserialized as strings
+                         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                     });
             services.AddSingleton<IEventProcessor, EventProcessor>();
             services.AddHostedService<MessageBusSubscriber>();
 
@@ -59,7 +61,7 @@ namespace SkillService
             app.UseRouting();
 
             app.UseAuthorization();
-            
+            PrepDb.PrepPopulation(app);
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
