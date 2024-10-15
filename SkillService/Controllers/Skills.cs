@@ -24,7 +24,7 @@ namespace SkillService.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<SkillReadDto>> GetSkillsForCertificate(int certificateId)
         {
-            Console.WriteLine($"--> Hit GetSkillssForPCertificate: {certificateId}");
+            Console.WriteLine($"--> Hit GetSkillssForCertificate: {certificateId}");
 
             if (!_repository.CertificateExits(certificateId))
             {
