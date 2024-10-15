@@ -77,6 +77,5 @@ namespace SkillService.Controllers
             return CreatedAtRoute(nameof(GetSkillForCertificate),
                 new { certificateId = certificateId, skillId = skillReadDto.Id }, skillReadDto);
         }
-
     }
 }
