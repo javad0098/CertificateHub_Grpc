@@ -94,8 +94,6 @@ namespace CertificateService
 
             app.UseAuthorization();
                 
-            Console.WriteLine("--> uinit 0");
-
             PrepDB.PrepPopulation(app, env.IsProduction());
 
             app.UseEndpoints(endpoints =>
