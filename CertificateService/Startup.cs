@@ -86,28 +86,29 @@ namespace CertificateService
                 app.UseSwaggerUI(c =>
                 {
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Certificate Service API v1");
-                    c.RoutePrefix = string.Empty; 
-            }
-
-            app.UseHttpsRedirection(); // Redirect HTTP requests to HTTPS
-
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            PrepDB.PrepPopulation(app, env.IsProduction());
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers(); // Map controller routes
-                endpoints.MapGrpcService<GrpcCertificateService>();
-
-                endpoints.MapGet("/protos/certificates.proto", async context =>
-                {
-                    await context.Response.WriteAsync(File.ReadAllText("Protos/certificates.proto"));
+                    c.RoutePrefix = string.Empty;
                 });
-            });
 
+                app.UseHttpsRedirection(); // Redirect HTTP requests to HTTPS
+
+                app.UseRouting();
+
+                app.UseAuthorization();
+
+                PrepDB.PrepPopulation(app, env.IsProduction());
+
+                app.UseEndpoints(endpoints =>
+                {
+                    endpoints.MapControllers(); // Map controller routes
+                    endpoints.MapGrpcService<GrpcCertificateService>();
+
+                    endpoints.MapGet("/protos/certificates.proto", async context =>
+                    {
+                        await context.Response.WriteAsync(File.ReadAllText("Protos/certificates.proto"));
+                    });
+                });
+
+            }
         }
     }
 }
